@@ -1,50 +1,37 @@
 package model;
 
 public class Cuadrilla {
+    private String codigo;
+    private double capacidadHoras;
+    private boolean certificadaRefrigeracion;
 
-    // Atributos
-    private final String codigo;
-    private final double capacidadHoras;
-    private final boolean certificadaRefrigeracion;
-
-    // Constructorr
     public Cuadrilla(String codigo, double capacidadHoras, boolean certificadaRefrigeracion) {
-
-        if (codigo == null || codigo.trim().isEmpty()) { // comprueba que el codigo no este vacio ni tenga espacio
-            throw new IllegalArgumentException(
-                "El codigo de la cuadrilla no puede estar vacio."
-            );
+        if (codigo == null || codigo.isBlank()) {
+            throw new IllegalArgumentException("El código no puede estar vacío.");
         }
-
-        if (!Double.isFinite(capacidadHoras) || capacidadHoras <= 0) { // rechazara valores como finitos o NaN
-            throw new IllegalArgumentException(
-                "La capacidad debe ser un numero mayor que cero."
-            );
+        if (capacidadHoras <= 0) {
+            throw new IllegalArgumentException("La capacidad de horas debe ser mayor a 0.");
         }
-
-        this.codigo = codigo.trim();
+        this.codigo = codigo;
         this.capacidadHoras = capacidadHoras;
         this.certificadaRefrigeracion = certificadaRefrigeracion;
     }
 
-    // Metodos
-    public String getCodigo() {
-        return codigo;
+    public String getCodigo() { 
+        return codigo; 
     }
 
-    public double getCapacidadHoras() {
-        return capacidadHoras;
+    public double getCapacidadHoras() { 
+        return capacidadHoras; 
     }
 
-    public boolean isCertificadaRefrigeracion() {
-        return certificadaRefrigeracion;
+    public boolean isCertificadaRefrigeracion() { 
+        return certificadaRefrigeracion; 
     }
 
     @Override
     public String toString() {
-        return "Codigo: " + codigo
-                + " | Capacidad por jornada: " + capacidadHoras + " horas"
-                + " | Certificada en refrigeraci  n: "
-                + certificadaRefrigeracion;
+        return String.format("Cuadrilla: %s | Capacidad: %.2fh | Certificada Refrigeración: %s",
+                codigo, capacidadHoras, certificadaRefrigeracion ? "Sí" : "No");
     }
 }

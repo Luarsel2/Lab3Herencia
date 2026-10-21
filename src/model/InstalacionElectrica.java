@@ -1,61 +1,38 @@
 package model;
 
 public class InstalacionElectrica extends Instalacion {
+    private double valorMateriales;
 
-    // ATRIBUTOS
-    private final double valorMateriales;
-
-    // CONSTRUCTOR
-    public InstalacionElectrica(String codigo, String nombreCliente, String direccion, double horasEstimadas,Zona zona, int cantidadPuntos,double valorMateriales) {
-
-        super(codigo, nombreCliente, direccion, horasEstimadas,
-              zona, cantidadPuntos);
-
-        if (!Double.isFinite(valorMateriales) || valorMateriales <= 0) {
-            throw new IllegalArgumentException(
-                "El valor de los materiales debe ser mayor que cero."
-            );
+    public InstalacionElectrica(String codigo, String cliente, String direccion, double horasEstimadas, Zona zona, int puntos, double valorMateriales) {
+        super(codigo, cliente, direccion, horasEstimadas, zona, puntos);
+        if (valorMateriales < 0) {
+            throw new IllegalArgumentException("El valor de materiales no puede ser negativo.");
         }
-
         this.valorMateriales = valorMateriales;
     }
 
-    // METODOS
-    public double getValorMateriales() {
-        return valorMateriales;
+    @Override
+    public double calcularCostoTotal() {
+        double costoBase = super.calcularCostoTotal();
+        double certificado = 120.00;
+        double garantiaMateriales = valorMateriales * 0.05;
+        return costoBase + certificado + garantiaMateriales;
     }
 
     @Override
-    public double calcularTotal() {
-        double costoInstalacion = super.calcularTotal();
-        double garantia = valorMateriales * 0.05;
-
-        return costoInstalacion + 120 + garantia;
+    public int calcularDiasEstimados() {
+        return super.calcularDiasEstimados() + 2;
     }
 
     @Override
-    public int calcularDiasAtencion() {
-        return super.calcularDiasAtencion() + 2;
-    }
-
-    @Override
-    public int getMaximoVisitas() {
+    public int getVisitasMaximas() {
         return 2;
     }
 
     @Override
-    public String getCategoria() {
-        return "Instalacion electrica certificada";
+    public String getNombreCategoria() {
+        return "Instalación Eléctrica Certificada";
     }
 
-    @Override
-    public String toString() {
-        return super.toString()
-                + " | Valor de materiales: Q"
-                + String.format(
-                        java.util.Locale.ROOT,
-                        "%.2f",
-                        valorMateriales
-                );
-    }
+    public double getValorMateriales() { return valorMateriales; }
 }

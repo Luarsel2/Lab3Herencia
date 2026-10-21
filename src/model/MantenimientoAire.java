@@ -1,64 +1,39 @@
 package model;
 
 public class MantenimientoAire extends OrdenDeServicio {
+    private int capacidadBTU;
 
-    // ATRIBUTOS
-    private final int capacidadBTU;
-
-    // CONSTRUCTOR
-    public MantenimientoAire(String codigo, String nombreCliente,String direccion, double horasEstimadas,Zona zona, int capacidadBTU) {
-
-        super(codigo, nombreCliente, direccion, horasEstimadas, zona);
-
+    public MantenimientoAire(String codigo, String cliente, String direccion, double horasEstimadas, Zona zona, int capacidadBTU) {
+        super(codigo, cliente, direccion, horasEstimadas, zona);
         if (zona != Zona.METROPOLITANA) {
-            throw new IllegalArgumentException(
-                "El mantenimiento de aire solo se acepta en zona metropolitana."
-            );
+            throw new IllegalArgumentException("El mantenimiento de aire solo se permite en la zona metropolitana.");
         }
-
         if (capacidadBTU < 9000 || capacidadBTU > 60000) {
-            throw new IllegalArgumentException(
-                "La capacidad debe estar entre 9000 y 60000 BTU."
-            );
+            throw new IllegalArgumentException("La capacidad debe estar entre 9,000 y 60,000 BTU.");
         }
-
         this.capacidadBTU = capacidadBTU;
     }
 
-    // METODOS
-    public int getCapacidadBTU() {
-        return capacidadBTU;
+    @Override
+    public double calcularCostoTotal() {
+        double tarifaBase = 100.00;
+        return tarifaBase + (horasEstimadas * 110.00) + 80.00; // Q80 por refrigerante
     }
 
     @Override
-    public double calcularTotal() {
-        return getTarifaBase() + getHorasEstimadas() * 110 + 80;
-    }
-
-    @Override
-    public int calcularDiasAtencion() {
+    public int calcularDiasEstimados() {
         return 2;
     }
 
     @Override
-    public int getMaximoVisitas() {
+    public int getVisitasMaximas() {
         return 1;
     }
 
     @Override
-    public String getCategoria() {
-        return "Mantenimiento de aire acondicionado";
+    public String getNombreCategoria() {
+        return "Mantenimiento Aire Acondicionado";
     }
 
-    @Override
-    public boolean esCompatibleCon(Cuadrilla cuadrilla) {
-        return cuadrilla != null
-                && cuadrilla.isCertificadaRefrigeracion();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString()
-                + " | Capacidad del equipo: " + capacidadBTU + " BTU";
-    }
+    public int getCapacidadBTU() { return capacidadBTU; }
 }

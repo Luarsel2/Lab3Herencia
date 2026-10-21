@@ -1,64 +1,39 @@
 package model;
 
 public class Instalacion extends OrdenDeServicio {
+    protected int puntos;
 
-    // ATRIBUTOS
-    private final int cantidadPuntos;
-
-    // CONSTRUCTOR
-    public Instalacion(String codigo, String nombreCliente, String direccion, double horasEstimadas,Zona zona, int cantidadPuntos) {
-
-        super(codigo, nombreCliente, direccion, horasEstimadas, zona);
-
-        if (cantidadPuntos <= 0) {
-            throw new IllegalArgumentException(
-                "La cantidad de puntos debe ser mayor que cero."
-            );
+    public Instalacion(String codigo, String cliente, String direccion, double horasEstimadas, Zona zona, int puntos) {
+        super(codigo, cliente, direccion, horasEstimadas, zona);
+        if (puntos <= 0) {
+            throw new IllegalArgumentException("La cantidad de puntos a instalar debe ser mayor a 0.");
         }
-
-        this.cantidadPuntos = cantidadPuntos;
-    }
-
-    // METODOS
-    public int getCantidadPuntos() {
-        return cantidadPuntos;
-    }
-
-    public double calcularHorasFacturables() {
-        double horasPorPuntos = cantidadPuntos * 0.75;
-
-        return Math.max(getHorasEstimadas(), horasPorPuntos);
+        this.puntos = puntos;
     }
 
     @Override
-    public double calcularTotal() {
-        double horasACobrar = Math.ceil(calcularHorasFacturables());
-
-        return getTarifaBase() + horasACobrar * 90;
+    public double calcularCostoTotal() {
+        double tarifaBase = (zona == Zona.METROPOLITANA) ? 100.00 : 175.00;
+        double horasPorPuntos = puntos * 0.75;
+        double horasFacturables = Math.max(horasEstimadas, horasPorPuntos);
+        int horasRedondeadas = (int) Math.ceil(horasFacturables);
+        return tarifaBase + (horasRedondeadas * 90.00);
     }
 
     @Override
-    public int calcularDiasAtencion() {
-        if (getZona() == Zona.METROPOLITANA) {
-            return 3;
-        }
-
-        return 5;
+    public int calcularDiasEstimados() {
+        return (zona == Zona.METROPOLITANA) ? 3 : 5;
     }
 
     @Override
-    public int getMaximoVisitas() {
+    public int getVisitasMaximas() {
         return 3;
     }
 
     @Override
-    public String getCategoria() {
-        return "Instalacion";
+    public String getNombreCategoria() {
+        return "Instalación";
     }
 
-    @Override
-    public String toString() {
-        return super.toString()
-                + " | Puntos: " + cantidadPuntos;
-    }
+    public int getPuntos() { return puntos; }
 }

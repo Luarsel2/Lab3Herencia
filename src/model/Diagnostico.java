@@ -2,42 +2,30 @@ package model;
 
 public class Diagnostico extends OrdenDeServicio {
 
-    public Diagnostico(String codigo, String nombreCliente,String direccion, double horasEstimadas,Zona zona) {
-
-        super(codigo, nombreCliente, direccion, horasEstimadas, zona);
-
+    public Diagnostico(String codigo, String cliente, String direccion, double horasEstimadas, Zona zona) {
+        super(codigo, cliente, direccion, horasEstimadas, zona);
         if (horasEstimadas > 1.5) {
-            throw new IllegalArgumentException(
-                "El diagnostico no puede superar 1.5 horas."
-            );
+            throw new IllegalArgumentException("Un diagnóstico no puede superar 1.5 horas estimadas.");
         }
     }
 
     @Override
-    public double calcularTotal() {
-        if (getZona() == Zona.METROPOLITANA) {
-            return 150;
-        }
-
-        return 225;
+    public double calcularCostoTotal() {
+        return (zona == Zona.METROPOLITANA) ? 150.00 : 225.00;
     }
 
     @Override
-    public int calcularDiasAtencion() {
-        if (getZona() == Zona.METROPOLITANA) {
-            return 1;
-        }
-
-        return 2;
+    public int calcularDiasEstimados() {
+        return (zona == Zona.METROPOLITANA) ? 1 : 2;
     }
 
     @Override
-    public int getMaximoVisitas() {
+    public int getVisitasMaximas() {
         return 3;
     }
 
     @Override
-    public String getCategoria() {
-        return "Diagnostico";
+    public String getNombreCategoria() {
+        return "Diagnóstico";
     }
 }

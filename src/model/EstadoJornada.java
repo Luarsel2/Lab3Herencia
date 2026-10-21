@@ -2,6 +2,6 @@ package model;
 
 public enum EstadoJornada {
     EN_PREPARACION,
-    INICIADA,
+    EN_ATENCION,
     CERRADA
 }
